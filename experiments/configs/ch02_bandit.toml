@@ -1,0 +1,11 @@
+[experiment]
+kind = "bandit"
+name = "epsilon-greedy-baseline"
+chapter = 2
+
+[bandit]
+actions = 10
+epsilons = [0.0, 0.01, 0.1]
+steps = 1000
+runs = 200
+seed = 7
