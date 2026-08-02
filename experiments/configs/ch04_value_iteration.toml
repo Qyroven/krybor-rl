@@ -1,0 +1,17 @@
+[experiment]
+kind = "planning"
+name = "stochastic-gridworld-value-iteration"
+chapter = 4
+
+[environment]
+slip = 0.10
+
+[algorithm]
+name = "value-iteration"
+gamma = 0.95
+theta = 1e-9
+
+[rollout]
+enabled = true
+seed = 7
+max_steps = 100
