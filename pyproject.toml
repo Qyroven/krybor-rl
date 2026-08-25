@@ -20,6 +20,12 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
+[project.optional-dependencies]
+content = [
+    "jsonschema>=4.23,<5",
+    "PyYAML>=6.0,<7",
+]
+
 [project.scripts]
 krybor-rl = "krybor_rl.interfaces.cli:main"
 

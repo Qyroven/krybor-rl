@@ -1,15 +1,22 @@
 PYTHON ?= python3
 
-.PHONY: install check test smoke bandit plan
+.PHONY: install install-content check content-check test smoke bandit plan
 
 install:
 	$(PYTHON) -m pip install -e .
+
+install-content:
+	$(PYTHON) -m pip install -e '.[content]'
 
 check:
 	$(PYTHON) -c 'import sys; assert sys.version_info >= (3, 11), "Krybor RL requires Python 3.11+"'
 	PYTHONPATH=src $(PYTHON) -m compileall -q src tests
 	PYTHONPATH=src $(PYTHON) -m unittest discover -s tests -v
+	$(MAKE) content-check PYTHON=$(PYTHON)
 	$(MAKE) smoke PYTHON=$(PYTHON)
+
+content-check:
+	$(PYTHON) -m tools.content.validate
 
 test:
 	PYTHONPATH=src $(PYTHON) -m unittest discover -s tests -v

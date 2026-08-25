@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://krybor.dev/schemas/content/concept.schema.json",
+  "title": "Krybor RL concept metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "kind",
+    "title",
+    "summary",
+    "status",
+    "prerequisites",
+    "related",
+    "mastery"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "kind": {
+      "const": "concept"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": ["draft", "review", "published"]
+    },
+    "prerequisites": {
+      "$ref": "#/$defs/idList"
+    },
+    "related": {
+      "$ref": "#/$defs/idList"
+    },
+    "unlocks": {
+      "$ref": "#/$defs/idList"
+    },
+    "implementations": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path"],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "symbol": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "visualizations": {
+      "$ref": "#/$defs/idList"
+    },
+    "exercises": {
+      "$ref": "#/$defs/idList"
+    },
+    "applications": {
+      "$ref": "#/$defs/idList"
+    },
+    "references": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "locator"],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "mastery": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "idList": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/id"
+      }
+    }
+  }
+}
