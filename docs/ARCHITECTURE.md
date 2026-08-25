@@ -1,5 +1,9 @@
 # Architecture
 
+This document describes the implemented Python RL architecture. The planned web,
+API, content, and infrastructure boundaries are specified separately in
+[architecture/SYSTEM.md](architecture/SYSTEM.md).
+
 Krybor RL separates the learning journey from the reusable software system.
 Folders under `labs/` follow the curriculum; packages under `src/` follow stable
 technical responsibilities.

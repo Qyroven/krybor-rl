@@ -1,10 +1,15 @@
 # Vision and scope
 
+This document summarizes the direction. The authoritative product definition and
+current delivery boundary live in [product/PRODUCT.md](product/PRODUCT.md) and
+[product/V1_SCOPE.md](product/V1_SCOPE.md).
+
 ## Mission
 
-Krybor RL should become a compact, inspectable body of reinforcement-learning
-knowledge: equations connected to code, code connected to experiments, and
-experiments connected to honest written conclusions.
+Krybor RL should become an executable visual map of reinforcement-learning
+knowledge: concepts connected to equations, equations connected to code, code
+connected to experiments and applications, and experiments connected to guided
+practice and honest written conclusions.
 
 The repository should answer three questions for every major method:
 
@@ -25,18 +30,26 @@ The repository should answer three questions for every major method:
 - **Complexity must be earned.** Add dependencies when they solve a demonstrated
   problem, not because a mature stack commonly contains them.
 
-## Current scope
+## Current implementation scope
 
-The current scope is pure reinforcement learning through small tabular problems.
-ROS 2, Gazebo, MuJoCo, Isaac, PyTorch, distributed training, and experiment
-tracking services are intentionally absent.
+The implemented baseline remains pure reinforcement learning through small tabular
+problems. ROS 2, Gazebo, MuJoCo, Isaac, PyTorch, distributed training, and
+experiment-tracking services are intentionally absent from the RL core today.
 
-They may be integrated later behind clean interfaces after the corresponding RL
-questions require them. A future robotics specialization should be a consumer or
-adjacent project, never a reason to distort the foundations.
+The next product milestone is a public, account-free Chapter 1 vertical slice with
+structured content, a visual knowledge graph, concept pages, two interactive
+experiences, a learning path, local progress, and a stateless Python computation
+API. Infrastructure grows alongside the product through a separate supporting
+[roadmap](infrastructure/ROADMAP.md).
+
+Robotics, AI assistance, cloud services, Kubernetes, and other advanced consumers
+may be integrated behind clean interfaces after a product or learning milestone
+requires them. A future specialization should consume the foundations, never
+distort them.
 
 ## What success looks like
 
-At maturity, a reader can start from a lab question, trace the implementation to
-the exact mathematical update, reproduce the result from a config, inspect the
-tests guarding it, and read a concise account of what was learned.
+At maturity, a learner can navigate from a knowledge-graph question to its
+prerequisites, visualize the behavior, trace the implementation to the exact
+mathematical update, reproduce the result from a config, inspect the tests guarding
+it, complete a mastery task, and connect the method to real applications.

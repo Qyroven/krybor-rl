@@ -26,6 +26,20 @@ produced it.
 lab, tests, reproducible experiment, and written reflection satisfy the
 [definition of done](docs/DEFINITION_OF_DONE.md).
 
+## Platform direction
+
+The long-term product is an executable visual map of reinforcement learning: a
+public knowledge graph, interactive textbook, tested RL engine, guided learning
+paths, and real applications. The first product release is deliberately smaller:
+a complete, account-free Chapter 1 vertical slice.
+
+The proposed scope and system boundaries are documented in the
+[product definition](docs/product/PRODUCT.md), [V1 scope](docs/product/V1_SCOPE.md),
+[content model](docs/product/CONTENT_MODEL.md), and
+[target system architecture](docs/architecture/SYSTEM.md). Infrastructure is a
+supporting learning and delivery track with its own
+[roadmap](docs/infrastructure/ROADMAP.md).
+
 ## The system
 
 ```mermaid
