@@ -1,0 +1,139 @@
+---
+id: agent
+kind: concept
+title: Agent
+summary: "A decision-making entity that receives observations, selects actions, and follows or learns a policy to maximize expected cumulative reward over time."
+status: draft
+prerequisites: []
+related: []
+implementations:
+  - path: src/krybor_rl/evaluation/rollouts.py
+    symbol: run_episode
+  - path: src/krybor_rl/environments/gridworld.py
+    symbol: GridWorld.sample_transition
+mastery:
+  - identify the agent-environment boundary in a GridWorld transition
+  - distinguish an agent from its policy and environment
+---
+
+## Intuition
+
+Imagine the agent in GridWorld as a rescue robot. At each step, the robot
+receives an observation, such as its current position, and uses its policy to
+select an intended action.
+
+The selected action does not guarantee the actual movement. For example, the
+robot may choose to move north, but uncertainty in the environment can make it
+slip in another direction. After the transition, the environment returns a new
+observation and a reward.
+
+The designer intends the robot to reach the destination safely, while the
+agent's formal objective is to maximize its expected cumulative reward over
+time.
+
+## Definition and assumptions
+
+An agent is the decision-making side of an interaction with an environment. It
+receives observations and uses a policy to select an intended action. The policy
+may choose one action deterministically or define a probability distribution over
+the available actions.
+
+The agent directly controls its action selection, not the outcome of that action.
+Its choice can influence a transition, but the environment determines the actual
+movement, next state, reward, and termination. A learning agent may update its
+policy from experience, but an agent can also act using a fixed policy.
+
+This definition does not assume that the agent observes the environment's full
+state, knows its transition dynamics, or is currently learning. Those properties
+depend on the particular reinforcement-learning problem.
+
+## Worked example
+
+Consider the rescue robot at the start state `(0, 0)`. Its policy selects the
+intended action `EAST`. The policy explains which action the agent chooses; it
+does not determine the transition outcome.
+
+With `slip = 0.10`, the GridWorld environment defines three possible outcomes:
+
+| Actual direction | Probability | Next state | Reward | Terminated |
+| --- | ---: | --- | ---: | --- |
+| `EAST` | 0.90 | `(0, 1)` | -1 | No |
+| `NORTH` | 0.05 | `(0, 0)` | -2 | No |
+| `SOUTH` | 0.05 | `(1, 0)` | -1 | No |
+
+The northward slip collides with the grid boundary, so the robot remains at
+`(0, 0)` and receives the collision reward. This example separates the agent's
+decision from the environment's stochastic response: the agent controls the
+intended action, while the environment controls the distribution of outcomes.
+
+## Implementation mapping
+
+The agent-environment boundary is visible in `run_episode()` in
+`src/krybor_rl/evaluation/rollouts.py`:
+
+```python
+action_probabilities = policy[state]
+actions = tuple(action_probabilities)
+action = rng.choices(
+    actions,
+    weights=[action_probabilities[item] for item in actions],
+    k=1,
+)[0]
+
+outcome = grid.sample_transition(state, action, rng)
+```
+
+Looking up `policy[state]` obtains the agent's decision rule for the current
+state. Sampling from those probabilities selects the intended action, so both
+operations belong to the agent side of the interaction. Calling
+`grid.sample_transition(...)` crosses the boundary into the environment, which
+samples the resulting transition from its dynamics.
+
+There are therefore two distinct sources of randomness in this rollout. A
+stochastic policy can randomize which action the agent selects, while the
+GridWorld's `slip` can randomize the outcome after that action has been selected.
+
+## Common mistakes
+
+### Treating the agent and policy as the same thing
+
+An agent is the decision-making system participating in the interaction. A
+policy is the rule the agent uses to select actions. The policy is not an
+external authority giving orders to the agent; it is part of the agent's
+decision process and may be fixed or learned.
+
+For a robot vacuum, the decision-making controller can be modeled as the agent.
+Its policy maps available information, such as a location or sensor readings, to
+an action such as moving forward, turning, or cleaning. The policy is not
+necessarily a map or a complete plan of the house.
+
+### Assuming that selecting an action controls its outcome
+
+The policy determines the intended action, but the environment determines what
+happens next. A robot vacuum may decide to move forward yet remain in place if a
+wheel slips or an obstacle blocks its path. The action influences the outcome;
+it does not guarantee it.
+
+## Mastery check
+
+A robot vacuum observes an obstacle ahead. Its policy selects `TURN_RIGHT`, but
+the wheels slip, the robot remains in place, and the environment returns a reward
+of -2.
+
+Identify the observation, intended action, actual outcome, and reward. Then draw
+the agent-environment boundary and explain whether the policy directly decided
+that the robot would remain in place.
+
+<details>
+  <summary>Check your reasoning</summary>
+
+The initial observation is that an obstacle is ahead. `TURN_RIGHT` is the
+intended action. Remaining in place is the actual outcome, and -2 is the reward
+returned after the transition.
+
+Under the boundary used here, the controller is the agent. The physical robot,
+its wheels, and the surrounding house belong to the environment dynamics. The
+policy selected `TURN_RIGHT`; it did not select or guarantee the outcome of
+remaining in place.
+
+</details>
